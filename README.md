@@ -53,7 +53,7 @@ alias ng="npx @angular/cli"
         ng g c display-data
         ng g c display_data
         ng g c displayData
-        这三种方式新增的组件目录均为display-data. 组件的类名则是使用驼峰式并且首字母大写. 以上方式创建的组件类名为DisplayData.
+        这三种方式新增的组件目录均为display-data. 组件的类名则是使用驼峰式并且首字母大写. 以上方式创建的组件类名为DisplayDataComponent.
 
     简写:
         
@@ -66,7 +66,7 @@ alias ng="npx @angular/cli"
 
 + ng serve [可选项]: 
 
-    启动Angular服务, 可以打开浏览器输入`http://localhost:4200`进行访问.
+    启动Angular服务, 可以打开浏览器输入[http://localhost:4200](http://localhost:4200)进行访问.
 
     可选项:
 
@@ -99,3 +99,20 @@ alias ng="npx @angular/cli"
 ```shell
 $ ng g c display-data
 ```
+
+2. 新增一个路由用来显示`display-data`组件, 以此校验该组件是否添加成功.
+   路由是比较复杂的, 这里我们只使用最简单的路由方式, 故所有的路由都添加在`app-routing.module.ts`文件中. 该文件中有一个routes数组变量就是用来储存路由的. 添加方式如下:
+   ```typescript
+    // 须将组件导入方可使用
+    import { DisplayDataComponent } from './display-data/display-data.component';
+
+    const routes: Routes = [
+        // path代表路由地址
+        // component为该路由地址对应的组件
+       { path: 'display-data', component: DisplayDataComponent}
+    ];
+   ```
+
+3. 做完这一切之后, 就可以通过浏览器打开对应的地址[http://localhost:4200/display-data](http://localhost:4200/display-data). 此时, 可以看到已经显示了`src/app/display-data/display-data.component.html`中的内容了. 如果没有正常显示请查看服务器是否启动(ng serve), 且本教程启动服务的方式不指定host和port, 故全采用默认, 以后就不再赘述. 
+
+
