@@ -152,4 +152,33 @@ export class DisplayDataComponent implements OnInit {
 }
 ```
 
+5. 简单介绍Angular HTML模板语法.
+
+    + 在HTML中可以使用组件类中存在的公有变量和公有方法
+
+    + 双括号语法`{{ }}`: 将组件类中的公共成员变量和公共成员方法调用写在双括号中时, Angular会自动解析并将数据渲染出来
+
+    + for循环语法: 可以遍历数组或对象等数据类型
+
+        ```html
+        <!-- for语法会重复当前标签进行遍历, heros为组件类的成员变量, hero是遍历heros时动态获取的元素 -->
+        <ul>
+            <li *ngFor="let hero of heros">
+                {{ hero }}
+            </li>
+        </ul>
+        <!-- 假设heros中的数据为['钢铁侠', '蜘蛛侠'], 则渲染数据如下 -->
+        <ul>
+            <li>钢铁侠</li>
+            <li>蜘蛛侠</li>
+        </ul>
+        ```
+
+    + if语法: 通过if判断为true的标签会显示, 如果为false的标签则会隐藏
+
+        ```html
+        <p *ngIf="10 > 3">该段话会显示出来</p>
+        <p *ngIf="heros.length > 3">当heros元素的长度大于3时显示,否则隐藏</p>
+        ```
+
 
