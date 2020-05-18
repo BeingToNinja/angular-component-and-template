@@ -115,4 +115,41 @@ $ ng g c display-data
 
 3. 做完这一切之后, 就可以通过浏览器打开对应的地址[http://localhost:4200/display-data](http://localhost:4200/display-data). 此时, 可以看到已经显示了`src/app/display-data/display-data.component.html`中的内容了. 如果没有正常显示请查看服务器是否启动(ng serve), 且本教程启动服务的方式不指定host和port, 故全采用默认, 以后就不再赘述. 
 
+4. 在编写代码前需要了解 display-data.component.ts 文件中的一些语法以及相关知识.
+```typescript
+// 从@angular/core库中引入Component, 所有组件都需要引入Component
+import { Component, OnInit } from '@angular/core';
+
+// 修饰器语法
+@Component({
+  // 一个CSS选择器，它告诉Angular在模板HTML中找到相应标记的位置创建并插入此组件的实例
+  // <app-display-data></app-display-data>
+  selector: 'app-display-data',
+  // 此组件的HTML模板的模块相对地址。该模板定义了组件的宿主视图。
+  templateUrl: './display-data.component.html',
+  // 内联HTML模板, 与templateUrl字段二选一, 通常在HTML代码短小时使用
+  // template: `<h1>Hello World</h1>`,
+  // 样式文件列表
+  styleUrls: ['./display-data.component.css'],
+  // 组件所需的服务提供者数组, 等用到之后再介绍
+  providers: [],
+})
+
+// 将组件类导出, 这样就可以供其它组件使用
+export class DisplayDataComponent implements OnInit {
+
+  /**
+   * 构造函数, 几乎不会在该函数中书写逻辑代码 
+   */
+  constructor() { }
+
+ /**
+  * 所有初始化的逻辑应该在该函数中书写, 而不是构造函数中
+  * 需要实现 OnInit 接口
+  */  
+  ngOnInit(): void {
+  }
+}
+```
+
 
