@@ -38,7 +38,22 @@ alias ng="npx @angular/cli"
 
 + ng generate component <组件名称> [可选项]: 
 
-    新增一个组件
+    新增一个组件, 组件新增成功后会在src/app目录下创建一个与组件名称相同的目录. 同时会自动在`app.module.ts`文件中将组件导入(注意: 如果未将组件导入则无法使用!). 
+
+    目录下通常包含如下几个文件:
+
+        组件名.component.css: css样式文件
+        组件名.component.html: 组件HTML, 如果使用内联模板参数-t则不会生成该文件
+        组件名.component.spec.ts: 测试文件
+        组件名.comonent.ts: 核心逻辑处理文件
+
+    组件名称命名问题:
+
+        当组件名称使用下划线`_`时, Angular命令行工具会自动转化成短横线`-`. 如果使用驼峰式命令组件时, 会自动分隔驼峰并用短横线`-`连接.
+        ng g c display-data
+        ng g c display_data
+        ng g c displayData
+        这三种方式新增的组件目录均为display-data. 组件的类名则是使用驼峰式并且首字母大写. 以上方式创建的组件类名为DisplayData.
 
     简写:
         
@@ -66,9 +81,9 @@ alias ng="npx @angular/cli"
 
 修改 src/app/app.component.html 的内容, 将系统自带的代码全部删除. 只留最后一行即可.
 
-    ```html
-    <router-outlet></router-outlet>
-    ```
+```html
+<router-outlet></router-outlet>
+```
 
 ## Angular基本使用
 
@@ -80,5 +95,7 @@ alias ng="npx @angular/cli"
 
 ## 显示数据
 
-
-
+1. 通过Angular命令行工具创建一个名为`display-data`的组件
+```shell
+$ ng g c display-data
+```
