@@ -9,6 +9,7 @@
 + [清理项目自带的演示代码](#清理项目自带的演示代码)
 + [Angular基本使用](#Angular基本使用)
     - [显示数据](#显示数据)
+    - [模板语法](#模板语法)
 
 ## 安装CLI
 
@@ -281,3 +282,58 @@ export class DisplayDataComponent implements OnInit {
         ```
 
 7. 至此, 已经可以完整在浏览器中显示我们编写的页面了
+
+
+## 模板语法
+
+语法详细示例与使用可以在`template-syntax`组件中查看或下载运行示例以加深了解.
+
+HTML是Angular的模板语言, 几乎所有HTML语法都是有效的模板语法. 但是`<script>`标签是不被允许的, 之所以禁止是为了消除脚本注入攻击的风险.
+
+1. 插值和模板表达式
+
+    1. 插值: 将表达式嵌入到标记的文本中, 默认情况下使用双花括号`{{ }}`来作为其定界符
+
+        ```html
+        <!-- 双花括号之间的文本通常是组件类属性的名称 -->
+        <h3>当前用户: {{ currentUser }}</h3>
+        <div><img src="{{ itemImageUrl }}"></div>
+
+        <!-- Angular在解析双花括号时 先计算所有表达式, 再将结果转化为字符串, 之后与相邻的字符串连接, 最后赋值给元素或指令属性 进行页面渲染 -->
+        <p>1 + 1 = {{ 1 + 1 }}. </p>
+
+        <!-- 也可以调用组件类的方法 -->
+        <p>1 + 1 != {{ 1 + 1 + getVal() }}</p>
+        ```
+
+    2. 模板表达式
+
+        许多JavaScript表达式都是合法的模板表达式, 含有以下操作的表达式不允许出现在Angular模板中:
+
+        + 赋值运算 (=, +=, -=, ...)
+        + new, typeof, instanceof 等操作
+        + ;和,表达式
+        + ++和--运算符
+        + 一些ES2015+的操作
+        + 不支持按位运算符, 如 | 和 &
+        + 不能引用全局命名空间中的任何东西, 也无法引用window或document.
+        + 不能调用console.log(), Math.max()等方法
+
+    3. 表达式上下文
+    ```html
+    <!-- customer 就是customers数组遍历时动态读取其元素的变量 -->
+    <ul>
+    <li *ngFor="let customer of customers">{{customer.name}}</li>
+    </ul>
+
+    <!-- 在标签元素上添加 #变量名, 则可以在HTML模板中通过该变量获取该标签元素的引用 -->
+    <label>Type something:
+    <input #customerInput>{{customerInput.value}}
+    </label>
+    ```
+
+    4. 表达式准则
+
+        + 简单
+        + 快速执行
+        + 没有明显可见的副作用
