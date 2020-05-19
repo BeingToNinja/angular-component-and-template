@@ -1,1 +1,10 @@
-<p>display-data works!</p>
+<h1>{{ title }}</h1>
+<h2>我最喜欢的英雄是: {{ myHero.name }}</h2>
+
+<p>英雄: </p>
+<ul>
+    <li *ngFor="let hero of heroes">
+        {{ hero.name }}
+    </li>
+</ul>
+<p *ngIf="heroes.length > 3">这里有很多超级英雄哦!</p>

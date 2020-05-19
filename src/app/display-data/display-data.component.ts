@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Hero } from '../classes/hero';
 
 @Component({
   selector: 'app-display-data',
@@ -7,9 +8,20 @@ import { Component, OnInit } from '@angular/core';
 })
 export class DisplayDataComponent implements OnInit {
 
-  constructor() { }
+  title = "英雄列表";
+  heroes: Hero[] = [
+    new Hero(1, '钢铁侠'),
+    new Hero(5, '咸蛋超人'),
+    new Hero(12, '蜘蛛侠'),
+    new Hero(14, '蝙蝠侠'),
+    new Hero(20, '煎饼侠'),
+  ];
+
+  myHero = this.heroes[0];
+
+  constructor() { 
+  }
 
   ngOnInit(): void {
   }
-
 }
