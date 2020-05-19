@@ -3,6 +3,13 @@
 本教程根据官方网站进行编写
 
 
++ [安装CLI](#安装CLI)
++ [常用的Angular命令行指令](#常用的Angular命令行指令)
++ [运行本项目](#运行本项目)
++ [清理项目自带的演示代码](#清理项目自带的演示代码)
++ [Angular基本使用](#Angular基本使用)
+    - [显示数据](#显示数据)
+
 ## 安装CLI
 
 + **方法一**: 
@@ -91,6 +98,22 @@ alias ng="npx @angular/cli"
         --open
             自动打开默认浏览器来访问
 
+## 运行本项目
+
+1. 使用Git下载本项目
+```shell
+$ git clone https://github.com/BeingToNinja/angular-component-and-template.git
+```
+2. 安装Node库文件
+```shell
+$ cd angular-component-and-template && npm intall
+```
+3. 运行项目
+```
+$ ng serve
+```
+4. 查看路由文件`src/app/app-routing.module.ts`, 可以根据路由文件展示的路由进行访问
+
 ## 清理项目自带的演示代码
 
 修改 src/app/app.component.html 的内容, 将系统自带的代码全部删除. 只留最后一行即可.
@@ -103,7 +126,6 @@ alias ng="npx @angular/cli"
 
 如无意外, 每个功能都独立在一个组件中, 方便理解.
 
-+ [显示数据](#显示数据)
 
 
 
