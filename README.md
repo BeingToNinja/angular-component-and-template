@@ -64,6 +64,20 @@ alias ng="npx @angular/cli"
         --inline-template (-t)
             使用内联模板, 当组件的HTML代码量极少时常会使用
 
+
+
+
+
+
++ ng generate class <类名称> [可选项]: 
+
+    在src/app目录下新增一个类文件以及一个测试文件. 与服务器数据交互基本上都会有固定的结构, 类似于数据库表结构, 通常可以声明一个类与之保持一致. 不过如果类过多则会显得src/app目录下过于拥挤不堪, 可以将其放入一个特定的目录下进行管理体验会更加不错.
+
+    可选项:
+
+        --skip-tests
+            将不会生成以`spec.ts`结尾的测试文件
+
 + ng serve [可选项]: 
 
     启动Angular服务, 可以打开浏览器输入[http://localhost:4200](http://localhost:4200)进行访问.
@@ -181,4 +195,67 @@ export class DisplayDataComponent implements OnInit {
         <p *ngIf="heros.length > 3">当heros元素的长度大于3时显示,否则隐藏</p>
         ```
 
+    + 如果使用VScode编写代码,则推荐两个插件来写Angular模板非常好
 
+        1. Angular Language Service: 可以在模板中自动提示成员变量和成员方法, 并且有简单的错误提示
+        2. Angular Snippets: 提供了快速生成模板语法, 比如if, for等
+
+6. 从服务端传输过来的数据一般都是特定字段的对象, 可以定义一个与之相同的类进行管理
+
+    1. 生成一个Hero类, 并保存在src/app/classes目录下
+
+        ```shell
+        $ ng g class classes/hero
+        ```
+
+    2. 设置Hero类的字段
+
+        ```typescript
+        export class Hero {
+            // 在构造函数中给参数赋予访问属性时, TypeScript会自动创建并将之赋值给成员变量, 不需要手动去赋值.
+            constructor(
+                public id: number,
+                public name: string
+            ) {}
+        }
+        ```
+    3. 在组件中引入Hero类
+
+        ```typescript
+        import { Hero } from '../classes/hero';
+        ```
+
+    4. 在组件中实例化Hero类
+
+        ```typescript
+        ...
+
+        export class DisplayDataComponent implements OnInit {
+
+            heroes: Hero[] = [
+                new Hero(1, '钢铁侠'),
+                new Hero(5, '咸蛋超人'),
+                new Hero(12, '蜘蛛侠'),
+                new Hero(14, '蝙蝠侠'),
+                new Hero(20, '煎饼侠'),
+            ];
+
+            myHero = this.heroes[0];
+
+            ...
+        }
+        ```
+
+    5. 在HTML模板中渲染数据
+
+        ```html
+        <!-- 由于heroes不再是字符串数组, 而是一个对象数组, 所以遍历时需要进行更改 -->
+        <ul>
+            <li *ngFor="let hero of heroes">
+                <!-- 修改前: {{ hero }} -->
+                {{ hero.name }}
+            </li>
+        </ul>
+        ```
+
+7. 至此, 已经可以完整在浏览器中显示我们编写的页面了
