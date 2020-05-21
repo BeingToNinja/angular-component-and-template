@@ -4,11 +4,13 @@ import { NgModule } from '@angular/core';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { DisplayDataComponent } from './display-data/display-data.component';
+import { TemplateSyntaxComponent } from './template-syntax/template-syntax.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    DisplayDataComponent
+    DisplayDataComponent,
+    TemplateSyntaxComponent
   ],
   imports: [
     BrowserModule,

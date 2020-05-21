@@ -1,0 +1,53 @@
+<h1>模板语法</h1>
+
+<!-- 示例之 <input> -->
+<h2> 示例1: &lt;input&gt;</h2>
+<input type="text" value="Sarah" #input />
+
+<p>
+    当用户在input中输入“Sally”时, DOM元素value属性将变成“Sally”. <br />
+    但是, HTML的value属性仍然保持不变, 依旧为“Sarah”. <br />
+    HTMl的value属性指定<em>初始值</em>, DOM的value属性是<em>当前值</em>.
+
+    在浏览器中打开调试终端(也可以点击下方按钮, 快速查看结果), 键入<code>input.getAttribute('value')</code> <br />
+    和<code>input.value</code>可以查看对应的HTML属性和DOM属性. <br />
+    当输入框的值发生变化后可以重复获取HTML和DOM的value属性查看有什么不同.
+</p>
+
+<button (click)="getHTMLAttributeAndDomProperty(input, render)">分别获取HTML和DOM的value属性</button>
+<div #render>
+    
+</div>
+
+<hr />
+
+<!-- 示例之 禁用的按钮-->
+<h2>示例2: 禁用的按钮</h2>
+
+<p>
+    默认情况下按钮是处于启用状态的, 当添加了disabled属性时, 该按钮会被禁用. <br />
+    添加和删除disabled属性可以开启/禁用按钮, 但一切与该HTML属性的值无关, 这就是为什么无法通过`<button disabled="false">按钮</button>`来启用按钮的原因. <br />
+    要想控制按钮的状态, 必须设置DOM的disabled属性.
+</p>
+
+<blockquote>
+    尽管可以从技术上设置[attr.disabled]属性绑定, 但是值的不同之处在于, DOM属性绑定需要为布尔值, 而其对应的HTML属性绑定取决于该值是否为null. <br />
+    <code>
+    &lt;input [disabled]="condition ? true : false"&gt; <br />
+    &lt;input [attr.disabled]="condition ? 'disabled' : null"&gt; <br />
+    </code>
+    通常, 使用DOM属性绑定而不是HTML属性绑定, 因为前者更直观, 语法更短, 并且性能更高. <br />
+</blockquote>
+
+
+<button (click)="switchHtmlButton()">切换HTML按钮属性 {{ htmlDisabled ? htmlDisabled : 'null' }}</button>
+<button (click)="switchDomButton()">切换DOM按钮属性 {{ domDisabled }}</button>
+
+<br />
+<button [attr.disabled]="htmlDisabled">HTML</button>
+<button [disabled]="domDisabled">DOM</button>
+
+
+
+
+
