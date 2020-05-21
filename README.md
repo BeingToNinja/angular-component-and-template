@@ -352,3 +352,71 @@ HTML是Angular的模板语言, 几乎所有HTML语法都是有效的模板语法
 
 模板语句上下文与使用准则也与模板表达式一致.
 
+
+3. 数据绑定
+
+数据绑定让开发者只需声明绑定源, 目标HTML元素之间的绑定, 剩余任务全交由框架去做, 使得应用程序更易于编写、读取和维护.
+
+Angular提供了多种数据绑定. 其类型根据数据流的方式可以分为3类:
+
+| 类型   |  语法  | 类别 |
+|-------| ------ | ----|
+| 插值   | `{{expression}}` | 单向, 从数据到视图
+| 属性、状态、类名、样式| `[target]="expression"` | 单向, 从数据到视图
+| 事件  | `(target)="statement"` | 单向, 从视图到数据
+| 双向  | `[(target)]="expression"` | 双向绑定
+
+
++ 数据绑定和HTML
+
+    在HTML开发的正常过程中, 您将创建带有HTML元素的视觉结构,并通过使用字符串常量设置元素属性来修改这些元素
+
+    ```html
+    <div class="special">Plain old HTML</div>
+    <img src="images/item.png">
+    <button disabled>Save</button>
+    ```
+
+    使用数据绑定, 您可以控制诸如按钮状态之类的事情:
+
+    ```html
+    <!-- 将按钮的不可用状态与 isUnchanged 变量进行绑定-->
+    <button [disabled]="isUnchanged">Save</button>
+    ```
+
+    这里要注意的是 *绑定的是button的DOM元素的disabled属性, 而不是HTML属性. 通常, 数据绑定都是作用于DOM元素、组件和指令的属性, 而不是HTML属性*
+
++ HTML属性和DOM属性
+
+    HTML属性和DOM属性之间的区别是了解Angular绑定如何工作的关键. **属性(attribute)由HTML定义, 可从DOM节点访问属性(property).**
+
+    - 有少数HTML属性1:1映射到DOM属性上, 比方说 id
+    - 一些HTML属性没有对应的DOM属性, 比方说 aria-*
+    - 一些DOM属性没有对应的HTML属性, 比方说 textContent
+
+    要记住, 即使HTML属性和DOM属性具有相同的名称, 它们也是不同的. 在Angular中, HTML属性的唯一作用是初始化元素和指令状态.
+
+    **模板绑定适用于DOM属性和事件, 而不是HTML属性.** 即在编写数据绑定时, 您仅仅是在处理DOM属性和目标对象的事件.
+    
+    > 该通用规则可以帮助您建立HTML属性和DOM属性的思维模型: **HTML属性初始化DOM属性, DOM属性可以改变而HTML属性不能.** 此规则有一个例外: 可以通过setAttribute()重新初始化相应的DOM属性.
+
+    #### 示例1: `<input>`
+    #### 示例2: 禁用的按钮
+
+    请在template-syntax组件中查看这连两个示例, 很好的展现了HTML属性和DOM属性的区别.
+
+数据绑定的目标是DOM对象. 根据绑定类型, 目标可以是属性(元素、组件或指令), 事件(元素、组件或指令)或有时是属性名称. 详情总结请看下表:
+
+| 类型   |  目标  | 示例 |
+|-------| ------ | ----|
+| DOM属性   | 元素属性 | `<img [src]="heroImageUrl" />`
+| DOM属性   | 组件属性 | `<app-component [property]="some-property"></app-component>`
+| DOM属性   | 指令属性 | `<div [ngClass]="{'special': isSpecial}"></div>`
+| 事件   | 元素属性 | `<button (click)="onSave()"></button>`
+| 事件   | 组件属性 | `<app-component (action)="some-action"></app-component>`
+| 事件   | 指令属性 | `<div (myClick)="clicked=$event" clickable>click me</div>`
+| 双向  | 事件和DOM属性 | `<input [(ngModel)]="name" />`
+| HTML属性  | HTML属性 | `<button [attr.aria-label]="help">help</button>`
+| 类  | class属性 | `<div [class.special]="isSpecial">Special</div>`
+| 样式  | style属性 | `<input type="button" [style.color]="isSpecial ? 'red' : 'green'" />`
+
