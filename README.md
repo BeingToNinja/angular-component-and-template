@@ -403,7 +403,7 @@ Angular提供了多种数据绑定. 其类型根据数据流的方式可以分�
     #### 示例1: `<input>`
     #### 示例2: 禁用的按钮
 
-    请在template-syntax组件中查看这连两个示例, 很好的展现了HTML属性和DOM属性的区别.
+    请在template-syntax组件中查看这两个示例, 很好的展现了HTML属性和DOM属性的区别.
 
 数据绑定的目标是DOM对象. 根据绑定类型, 目标可以是属性(元素、组件或指令), 事件(元素、组件或指令)或有时是属性名称. 详情总结请看下表:
 
@@ -420,3 +420,94 @@ Angular提供了多种数据绑定. 其类型根据数据流的方式可以分�
 | 类  | class属性 | `<div [class.special]="isSpecial">Special</div>`
 | 样式  | style属性 | `<input type="button" [style.color]="isSpecial ? 'red' : 'green'" />`
 
+4. DOM属性绑定
+
+使用属性绑定来设置目标元素的DOM属性和@Input()指令
+
++ 单向绑定
+
+DOM属性绑定从组件属性单方向传递到目标元素属性.
+您不能使用属性绑定从目标元素读取值, 同样也不能在目标元素上调用方法. 如果该元素引发事件, 则需要使用**事件绑定**来监听.
+
++ 例子
+
+    大部分属性绑定都是将一个元素属性赋值给组件属性.
+
+
+    - 将img元素的src属性绑定到组件的itemImageUrl属性上
+
+    ```html
+    <img [src]="itemImageUrl" />
+    ```
+
+    - 绑定*colSpan*属性. 要注意这不是HTML的*colspan*属性!
+
+    ```html
+    <tr><td [colSpan]="2">Span 2 columns</td></tr>
+    ```
+
+    - 通过一个Angular指令来设置属性
+
+    ```html
+    <p [ngClass]="classes">[ngClass]绑定了classes属性/p>
+    ```
+
+    - 设置自定义组件的模型属性, 这是父子组件之间通信的好方法
+
+    ```html
+    <app-component [childItem]="parentItem"></app-component>
+    ```
+
++ 绑定目标
+
+    绑定目标属性使用方括号进行括起, 可以在属性前添加`bind-`来替代方括号. 不过这里推荐使用方括号语法, 比较方便. 在绝大多数情况下, 绑定目标名称同HTML属性的名称相同, 其依然是DOM属性, 而非HTML属性.
+
+    如果忘记使用方括号或`bind-`, 则Angular会将字符串视为常量, 并使用该字符串初始化目标属性
+
++ 避免副作用
+
++ 返回正确的类型
+
+    模板表达式应为目标属性期望的值类型. 即目标属性需要什么类型就应该返回什么类型.
+
++ 组件之间数据的传递
+
+    在组件中接受传递过来的数据需要使用@Input()指令进行修饰
+
+    ```typescript
+    @Input() myString: string;
+    @Input() myNumberArray: Array<number>;
+    @Input() someElseType: Person;
+    @Input() someElseTypeArray: Person[];
+    ```
+
+    在使用需要传递特定属性的组件时必须传递与要求的参数一致, 否则会发生错误导致无法运行或不可预估的结果.
+
++ 一次性字符串初始化
+
+    如果满足一下所有条件, 则不应该使用绑定:
+    - 目标属性接受一个字符串值
+    - 字符串是一个固定值, 可以直接放入模板中
+    - 此初始值永不变
+
++ 属性绑定与插值
+
+    通常情况在插值和属性绑定之间可以互换. 插值是属性绑定的便捷替代方法. 但是, 将元素属性设置为*非字符串数据值*时, 必须使用属性绑定.
+
++ 内容安全
+
+    假设字符串中含有脚本代码, 则在插值中使用时会对处于危险的HTML进行警报. 且HTML会按原样输出并不会执行JavaScript代码. 可以使用innerHTML属性绑定对之进行过滤:
+    ```typescript
+    // 含有恶意脚本的组件属性
+    evilTitle = '模板 <script>alert("恶意攻击永不止步")</script> 语法';
+    ```
+    ```html
+    <p>使用插值显示evilTitle变量: <span>{{ evilTitle }}</span></p>
+    <p>使用属性绑定形式显示: <span [innerHTML]="evilTitle"></span></p>
+    ```
+    两者处理方法虽不同, 但均不会使恶意代码生效:
+    ```
+    使用插值显示evilTitle变量: 模板语法
+    使用属性绑定形式显示: 模板 <script>alert("恶意攻击永不止步")</script> 语法
+    ```
+    
