@@ -586,8 +586,38 @@ HTML属性绑定的主要用例之一就是设置ARIA属性, 如下所示:
 
 + 样式优先级
 
-当有多个绑定到相同的类名或样式属性时, Angular使用一组优先规则来解决冲突并确定最终将哪些类或样式应用于元素
+当有多个绑定到相同的类名或样式属性时, Angular使用一组优先规则来解决冲突并确定最终将哪些类或样式应用于元素.
+
+> 样式优先（从高到低）  
+  1. 模板绑定  
+    1. 属性绑定（例如<div [class.foo]="hasFoo">或<div [style.color]="color">）  
+    2. 映射(Map)绑定（例如<div [class]="classExpr">或）<div [style]="styleExpr">  
+    3. 静态值（例如\<div class="foo">或）\<div style="color: blue">  
+  2. 指令主机绑定
+    1. 属性绑定（例如host: {'[class.foo]': 'hasFoo'}或host: {'[style.color]': 'color'}）  
+    2. 映射(Map)绑定（例如host: {'[class]': 'classExpr'}或）host: {'[style]': 'styleExpr'}  
+    3. 静态值（例如host: {'class': 'foo'}或） host: {'style': 'color: blue'}  
+  3. 组件主机绑定  
+    1. 属性绑定（例如host: {'[class.foo]': 'hasFoo'}或host: {'[style.color]': 'color'}）  
+    2. 映射(Map)绑定（例如host: {'[class]': 'classExpr'}或）host: {'[style]': 'styleExpr'}  
+    3. 静态值（例如host: {'class': 'foo'}或） host: {'style': 'color: blue'}  
+
+类或样式绑定越具体, 其优先级越高.
+到特定类的绑定, 将优于通用[class]绑定, 而特定样式的绑定, 将优先于通用[style]绑定.
+
+当涉及来自不同来源的绑定时, 也适用特异性规则. 元素可能会在声明的模板中具有绑定, 这取决于匹配指令上的主机绑定, 以及匹配组件上的主机绑定.
+模板绑定是最具体的, 因为它们直接且排他地应用于元素, 因此它们具有最高的优先级.
+指令主机绑定被认为不太具体, 因为指令可以在多个位置使用, 因此它们的优先级低于模板绑定.
+指令通常会增强组件的行为, 因此来自组件的主机绑定的优先级最低.
+
+另外, 绑定优先于静态属性.
+
 
 + 委托较低优先级的样式
 
+较高的优先级样式可能会使用undefined值委托给较低的优先级样式. 设置样式属性为NULL确保删除样式, 将样式属性设置为undefined会导致Angular退回到该样式的次高优先级绑定.
+
+通俗来讲就是, 高优先级[style.width]的值为undefined, 那么会去使用次高优先级的[style]="width: 100px"中的width, 而如果设置为null则不会.
+
+  #### 示例3: 样式优先级
 

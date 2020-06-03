@@ -10,6 +10,9 @@ export class TemplateSyntaxComponent implements OnInit {
   domDisabled: boolean = false;
   htmlDisabled: string | null = null;
 
+  myColor: string = "blue";
+  myStyle = {color: "red"};
+
   constructor() { }
 
   ngOnInit(): void {

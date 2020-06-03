@@ -49,5 +49,13 @@
 
 
 
+<!-- 示例之 样式优先级-->
+<h2>示例3: 样式优先级</h2>
+
+<p [style.color]="myColor" [style]="myStyle">本段文字字体颜色采用[style.color]设置的颜色</p>
+<p [style.color]="undefined" [style]="myStyle">当高优先级的值为undefined时, 会委托给次高优先级, 所以这里采用[style]中的样式</p>
+<p [style.color]="null" [style]="myStyle">将高优先级的值设为null表示删除该样式, 不会使用次高级的样式</p>
+
+
 
 
