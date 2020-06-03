@@ -510,4 +510,84 @@ DOM属性绑定从组件属性单方向传递到目标元素属性.
     使用插值显示evilTitle变量: 模板语法
     使用属性绑定形式显示: 模板 <script>alert("恶意攻击永不止步")</script> 语法
     ```
-    
+
+5. HTML属性、类和样式绑定
+
+模板语法为不太适合属性绑定的情况提供了专门的单向绑定.
+
++ HTML属性绑定
+
+直接使用HTML属性绑定来设置HTML属性的值.
+通常, 使用**属性绑定**来设置一个元素的属性优先级高于使用字符串来设置. 然而, 有时候没有元素属性需要绑定, 此时便可以使用HTML属性绑定. 比方说[aria](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA)和[svg](https://developer.mozilla.org/en-US/docs/Web/SVG), 它们是纯粹的HTML属性, 不对应元素的DOM属性, 也不设置元素的DOM属性. 在这些情况下, 没有要绑定的DOM属性.
+HTML属性绑定语法类似于DOM属性绑定, 只不过是在方括号中的元素属性前多了`attr.`. 这样就可以解析为字符串的表达式来设置HTML属性值, 或者在删除时表达式解析为NULL.
+HTML属性绑定的主要用例之一就是设置ARIA属性, 如下所示:
+```html
+<button [attr.aria-label]="actionName">{{actionName}} with Aria</button>
+```
+
+> colspan 和 colSpan  
+  注意colspan属性(HTML)和colSpan属性(DOM)之间的区别.  
+  如果如下书写:  
+  ```<tr><td colspan="{{ 1 + 1 }}">Three-Four</td></tr>```
+  就会收到如下错误:  
+  ```
+  Template parse errors:
+  Can't bind to 'colspan' since it isn't a known native property.
+  ```  
+> 如消息所示, 该td元素没有colspan属性. 这是正确的. 因为colspan是colSpan相应的HTML属性. **插值和属性绑定只能设置DOM属性, 而不能设置HTML属性**. 所以, 应该如下编写代码:  
+  ```<tr><td [colSpan]="1 + 1">Three-Four</td></tr>```
+
++ 类绑定
+
+以下是类在纯HTML中设置没有绑定的属性的方法:
+```html
+<div class="foo bar">Some text</div>
+```
+您还可以使用**类绑定**从元素的属性中添加和删除CSS类名称.  
+要创建单个类绑定, 请以前缀`class.`开头, 后跟CSS类的名称 (如`[class.foo]="hasFoo"`). Angular在绑定表达式为真时添加类, 在表达式为假时删除类.
+要创建对多个类的绑定, 请使用[class]的通用绑定 (如`[class]="classExpr"`). 该表达式可以是一个以空格分隔的类名称字符串, 也可以将其格式化为一个对象, 并以类名作为键且使用true/fasle作为值. 对于对象格式, Angular仅在其关联的值为真时才添加一个类.
+如果同一类名有多个绑定, 则使用·样式优先级·解决冲突.
+
+| 绑定类型   |  语法  | 输入类型 | 示例 
+|-------| ------ | ----| --- |
+| 单类绑定   | [class.foo]="hasFoo" |  boolean \| undefined \|null | true, false 
+| 多类绑定   | [class]="classExpr" | string | "my-class-1 my-class-2 my-class-3" 
+| | | {[key: string]: boolean \| undefined \| null} | {foo: true, bar: false}
+| | | Array\<string> | ['foo', 'bar']
+
+`NgClass`指令与[class]绑定如出一辙, 然而该指令未来可能会被废弃, 请尽量不要使用.
+
++ 样式绑定
+
+以下是样式在纯HTML中设置的样例:
+```html
+<div style="color: blue">Some text</div>
+```
+您可以通过样式绑定来动态设置样式.
+要创建单个样式绑定, 请以前缀`style.`开头, 后跟CSS样式属性的名称(如`[style.width]="width"`). 该属性将设置为绑定表达式的值, 该表达式通常是一个字符串. 您还可以添加数字类型的单位扩展名, 例如em或%.
+
+> 请注意, 样式属性名称可以使用*破折号*, 或*驼峰式*
+
+如果想切换多种样式, 则可以直接绑定到属性. 绑定中附加的表达式通常是样式字符串列表, 例如: [style]="styleExpr", [style]="width: 100px; height: 100px;".
+
+您还可以将表达式格式化为对象, 并以样式名为键, 样式值为值. 例如 {width: '100px', height: '100px'}.
+
+如果同一样式属性有多个绑定，则使用样式优先级规则解决冲突。
+
+| 绑定类型   |  语法  | 输入类型 | 示例 
+|-------| ------ | ----| --- |
+| 单样式绑定   | [style.width]="width" |  string \| undefined \|null | "100px"
+| 含单位的单样式绑定   | [style.width.px]="width" |  number \| undefined \|null | "100"
+| 多样式绑定   | [style]="styleExpr" | string | "width: 100px; height: 100px" 
+| | | {[key: string]: string \| undefined \| null} | {width: '100px', height: '100px'}
+| | | Array\<string> | ['width', '100px']
+
+`NgStyle`指令与[style]绑定如出一辙, 然而该指令未来可能会被废弃, 请尽量不要使用.
+
++ 样式优先级
+
+当有多个绑定到相同的类名或样式属性时, Angular使用一组优先规则来解决冲突并确定最终将哪些类或样式应用于元素
+
++ 委托较低优先级的样式
+
+
